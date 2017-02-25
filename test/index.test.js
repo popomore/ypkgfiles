@@ -81,6 +81,17 @@ describe('test/index.test.js', () => {
     ]);
   });
 
+  it('should ignore when no export', function* () {
+    cwd = path.join(__dirname, 'fixtures/no-export');
+    yield coffee.fork(bin, [ '--entry', 'a.js' ], { cwd })
+    .debug()
+    .end();
+
+    assert.deepEqual(getFiles(cwd), [
+      'a.js',
+    ]);
+  });
+
 });
 
 function getFiles(cwd) {

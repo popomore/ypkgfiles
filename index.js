@@ -77,8 +77,12 @@ function resolveEntry(options) {
 
   const result = new Set();
 
-  // set the entry that module exports
-  result.add(require.resolve(cwd));
+  try {
+    // set the entry that module exports
+    result.add(require.resolve(cwd));
+  } catch (_) {
+    // ignore
+  }
 
   for (const entry of entries) {
     const files = glob.sync(entry, { cwd });
