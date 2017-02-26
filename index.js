@@ -33,6 +33,7 @@ module.exports = options => {
 
 function resolveRelativeFiles(entry, files) {
   if (!files) files = new Set();
+  if (files.has(entry)) return;
   files.add(entry);
   debug('resolve entry %s', entry);
   const body = fs.readFileSync(entry, 'utf8');
@@ -40,13 +41,26 @@ function resolveRelativeFiles(entry, files) {
   for (let file of rfiles) {
     // only resolve relative path
     if (file[0] === '.') {
+      // ./foo.js > foo.js
       file = path.join(path.dirname(entry), file);
-      if (fs.existsSync(file.replace(/\.js$/, '') + '.js')) {
-        file = file.replace(/\.js$/, '') + '.js';
-      } else {
-        file = path.join(file, 'index.js');
+      if (isFile(file)) {
+        resolveRelativeFiles(file, files);
+        continue;
       }
-      resolveRelativeFiles(file, files);
+
+      // ./foo > foo.js
+      const filejs = file + '.js';
+      if (isFile(filejs)) {
+        resolveRelativeFiles(filejs, files);
+        continue;
+      }
+
+      // ./foo > foo/index.js
+      const filedir = path.join(file, 'index.js');
+      if (isFile(filedir)) {
+        resolveRelativeFiles(filedir, files);
+        continue;
+      }
     }
   }
   return files;
@@ -55,8 +69,10 @@ function resolveRelativeFiles(entry, files) {
 function addResult(files, result, cwd) {
   for (let file of files) {
     file = path.relative(cwd, file).split('/')[0];
-    result.add(file);
-    debug('add return %s', file);
+    if (file !== 'package.json') {
+      result.add(file);
+      debug('add return %s', file);
+    }
   }
 }
 
@@ -107,4 +123,8 @@ function resolveEntry(options) {
   }
 
   return result;
+}
+
+function isFile(file) {
+  return fs.existsSync(file) && fs.statSync(file).isFile();
 }
