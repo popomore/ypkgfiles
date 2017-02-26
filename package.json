@@ -4,6 +4,7 @@
   "description": "Yet another pkgfiles that generate pkg.files automatically",
   "dependencies": {
     "crequire": "^1.7.0",
+    "debug": "^2.6.1",
     "glob": "^7.1.1",
     "is-type-of": "^1.0.0",
     "yargs": "^6.6.0"

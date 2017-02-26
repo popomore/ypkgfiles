@@ -5,6 +5,7 @@ const path = require('path');
 const is = require('is-type-of');
 const crequire = require('crequire');
 const glob = require('glob');
+const debug = require('debug')('ypkgfiles');
 
 
 const defaults = {
@@ -26,8 +27,6 @@ module.exports = options => {
     addResult(files, result, cwd);
   }
 
-  addResult(getFiles(options), result, cwd);
-
   pkg.files = Array.from(result);
   writePackage(path.join(cwd, 'package.json'), pkg);
 };
@@ -35,6 +34,7 @@ module.exports = options => {
 function resolveRelativeFiles(entry, files) {
   if (!files) files = new Set();
   files.add(entry);
+  debug('resolve entry %s', entry);
   const body = fs.readFileSync(entry, 'utf8');
   const rfiles = crequire(body, true).map(o => o.path);
   for (let file of rfiles) {
@@ -53,8 +53,10 @@ function resolveRelativeFiles(entry, files) {
 }
 
 function addResult(files, result, cwd) {
-  for (const file of files) {
-    result.add(path.relative(cwd, file).split('/')[0]);
+  for (let file of files) {
+    file = path.relative(cwd, file).split('/')[0];
+    result.add(file);
+    debug('add return %s', file);
   }
 }
 
@@ -68,6 +70,7 @@ function writePackage(pkgPath, obj) {
   fs.writeFileSync(pkgPath, content);
 }
 
+// return entries with fullpath based on options.entry
 function resolveEntry(options) {
   const cwd = options.cwd;
   const pkg = options.pkg;
@@ -84,7 +87,12 @@ function resolveEntry(options) {
     // ignore
   }
 
-  for (const entry of entries) {
+  for (let entry of entries) {
+    const dir = path.join(cwd, entry);
+    // if entry is directory, find all js in the directory
+    if (fs.existsSync(dir) && fs.statSync(dir).isDirectory()) {
+      entry = path.join(entry, '**/*.js');
+    }
     const files = glob.sync(entry, { cwd });
     for (const file of files) {
       result.add(path.join(cwd, file));
@@ -98,21 +106,5 @@ function resolveEntry(options) {
     }
   }
 
-  return result;
-}
-
-function getFiles(options) {
-  const cwd = options.cwd;
-  let files = [];
-  if (is.array(options.files)) files = options.files;
-  if (is.string(options.files)) files.push(options.files);
-
-  const result = new Set();
-  for (let file of files) {
-    file = path.join(cwd, file);
-    if (fs.existsSync(file)) {
-      result.add(file);
-    }
-  }
   return result;
 }

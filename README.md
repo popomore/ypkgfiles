@@ -37,19 +37,13 @@ $ pkgfiles
 
 Then `files` will be generated in `package.json`. ypkgfiles will lookup files from the main export.
 
-## --entry
-
 If you want to publish some files that is not based on main export, such as `mz`
 
 ```js
 require('mz/fs')
 ```
 
-You can use `--entry fs.js` options to add to files automatically. if have more files, you can use glob `--entry *.js`.
-
-## --files
-
-If you want to publish some files that will not be required, maybe it will be used by some loader, you can use `--files app` to add to files automatically.
+You can use `--entry fs.js` options to add to files automatically. If have more files, you can use glob `--entry *.js`.
 
 ## License
 
