@@ -22,6 +22,20 @@ describe('test/index.test.js', () => {
       'lib',
       'util.js',
       'c',
+      'pkg',
+    ]);
+  });
+
+  it('should resolve recursively', function* () {
+    cwd = path.join(__dirname, 'fixtures/recursive');
+    yield coffee.fork(bin, [], { cwd })
+    .debug()
+    .end();
+
+    assert.deepEqual(getFiles(cwd), [
+      'index.js',
+      'lib',
+      'util.js',
     ]);
   });
 
