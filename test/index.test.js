@@ -27,7 +27,7 @@ describe('test/index.test.js', () => {
 
   it('should multi entry', function* () {
     cwd = path.join(__dirname, 'fixtures/multi-entry');
-    yield coffee.fork(bin, [ '--entry', 'a.js', '--entry', 'b.js' ], { cwd })
+    yield coffee.fork(bin, [ '--entry', 'a.js', '--entry', 'b.js', '--entry', 'app' ], { cwd })
     .debug()
     .end();
 
@@ -37,6 +37,8 @@ describe('test/index.test.js', () => {
       'a',
       'b.js',
       'b',
+      'app',
+      'c',
     ]);
   });
 
@@ -51,19 +53,6 @@ describe('test/index.test.js', () => {
       'a.js',
       'a',
       'b.js',
-      'b',
-    ]);
-  });
-
-  it('should support files', function* () {
-    cwd = path.join(__dirname, 'fixtures/files');
-    yield coffee.fork(bin, [ '--files', 'a', '--files', 'b/index.js', '--files', 'c' ], { cwd })
-    .debug()
-    .end();
-
-    assert.deepEqual(getFiles(cwd), [
-      'index.js',
-      'a',
       'b',
     ]);
   });
