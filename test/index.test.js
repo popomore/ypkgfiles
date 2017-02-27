@@ -4,7 +4,7 @@ const fs = require('mz/fs');
 const assert = require('assert');
 const path = require('path');
 const coffee = require('coffee');
-const bin = path.join(__dirname, '../bin/pkgfiles.js');
+const bin = path.join(__dirname, '../bin/ypkgfiles.js');
 
 describe('test/index.test.js', () => {
 
@@ -93,6 +93,15 @@ describe('test/index.test.js', () => {
     assert.deepEqual(getFiles(cwd), [
       'a.js',
     ]);
+  });
+
+  it('should deprecate pkgfiles', function* () {
+    const bin = path.join(__dirname, '../bin/pkgfiles.js');
+    cwd = path.join(__dirname, 'fixtures/resolve');
+    yield coffee.fork(bin, [], { cwd })
+    // .debug()
+    .expect('stderr', 'WARN: recommend to use ypkgfiles\n')
+    .end();
   });
 
 });
