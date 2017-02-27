@@ -1,4 +1,9 @@
 
+1.2.0 / 2017-02-27
+==================
+
+  * feat: recommend to use ypkgfiles instead of pkgfiles (#4)
+
 1.1.2 / 2017-02-27
 ==================
 
