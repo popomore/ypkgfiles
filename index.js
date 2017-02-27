@@ -82,7 +82,7 @@ function readPackage(pkgPath) {
 }
 
 function writePackage(pkgPath, obj) {
-  const content = JSON.stringify(obj, null, 2);
+  const content = JSON.stringify(obj, null, 2) + '\n';
   fs.writeFileSync(pkgPath, content);
 }
 
