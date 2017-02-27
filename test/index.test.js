@@ -99,5 +99,6 @@ describe('test/index.test.js', () => {
 
 function getFiles(cwd) {
   const body = fs.readFileSync(path.join(cwd, 'package.json'), 'utf8');
+  assert(/\n$/.test(body));
   return JSON.parse(body).files;
 }
