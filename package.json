@@ -41,7 +41,8 @@
   "author": "popomore <sakura9515@gmail.com>",
   "license": "MIT",
   "bin": {
-    "pkgfiles": "bin/pkgfiles.js"
+    "pkgfiles": "bin/pkgfiles.js",
+    "ypkgfiles": "bin/ypkgfiles.js"
   },
   "files": [
     "index.js",

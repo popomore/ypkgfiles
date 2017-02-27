@@ -2,10 +2,5 @@
 
 'use strict';
 
-const argv = require('yargs').argv;
-
-require('..')({
-  cwd: argv.cwd || process.cwd(),
-  entry: argv.entry,
-  files: argv.files,
-});
+console.error('WARN: recommend to use ypkgfiles');
+require('./ypkgfiles');
