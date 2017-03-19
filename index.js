@@ -80,7 +80,7 @@ function resolveEntry(options) {
 function getFiles(files, cwd) {
   const result = new Set();
   for (let file of files) {
-    file = path.relative(cwd, file).split('/')[0];
+    file = path.relative(cwd, file).split(path.sep)[0];
     if (file !== 'package.json') result.add(file);
   }
   return Array.from(result);

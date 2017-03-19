@@ -39,6 +39,23 @@ describe('test/index.test.js', () => {
     ]);
   });
 
+  it('should resolve egg', function* () {
+    cwd = path.join(__dirname, 'fixtures/pkgfiles');
+    yield coffee.fork(bin, [
+      '--entry', 'app',
+      '--entry', 'config',
+      '--entry', '*.js',
+    ], { cwd })
+      .debug()
+      .end();
+
+    assert.deepEqual(getFiles(cwd), [
+      'app',
+      'config',
+      'app.js',
+    ]);
+  });
+
   it('should multi entry', function* () {
     cwd = path.join(__dirname, 'fixtures/multi-entry');
     yield coffee.fork(bin, [ '--entry', 'a.js', '--entry', 'b.js', '--entry', 'app' ], { cwd })
