@@ -6,11 +6,13 @@ const is = require('is-type-of');
 const glob = require('glob');
 const resolveFiles = require('resolve-files');
 const debug = require('debug')('ypkgfiles');
+const assert = require('assert');
 
 const defaults = {
   cwd: process.cwd(),
   entry: [],
   files: [],
+  check: false,
 };
 
 module.exports = options => {
@@ -18,12 +20,17 @@ module.exports = options => {
 
   const cwd = options.cwd;
   const pkg = options.pkg = readPackage(path.join(cwd, 'package.json'));
+  const isCheck = options.check;
 
   const entry = resolveEntry(options);
   debug('get entry %s', entry);
-  const files = resolveFiles({ entry, ignoreModules: true });
+  let files = resolveFiles({ entry, ignoreModules: true });
   debug('get files %s', files);
-  pkg.files = getFiles(files, cwd);
+  files = getFiles(files, cwd);
+
+  if (isCheck) return check(files, pkg.files || []);
+
+  pkg.files = files;
   debug('get pkg.files %s', pkg.files);
   writePackage(path.join(cwd, 'package.json'), pkg);
 };
@@ -84,4 +91,16 @@ function getFiles(files, cwd) {
     if (file !== 'package.json') result.add(file);
   }
   return Array.from(result);
+}
+
+function check(files, originalFiles) {
+  const msg = `pkg.files should equal to ${toArray(files)}, but got ${toArray(originalFiles)}`;
+  assert(files.length === originalFiles.length, msg);
+  for (const file of files) {
+    assert(originalFiles.indexOf(file) > -1, msg);
+  }
+}
+
+function toArray(arr) {
+  return `[ ${arr.join(', ')} ]`;
 }

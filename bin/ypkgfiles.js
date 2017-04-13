@@ -2,10 +2,20 @@
 
 'use strict';
 
-const argv = require('yargs').argv;
+const argv = require('yargs')
+  .version()
+  .alias('V', 'version')
+  .boolean('check')
+  .argv;
 
-require('..')({
-  cwd: argv.cwd || process.cwd(),
-  entry: argv.entry,
-  files: argv.files,
-});
+try {
+  require('..')({
+    cwd: argv.cwd || process.cwd(),
+    entry: argv.entry,
+    files: argv.files,
+    check: argv.check,
+  });
+} catch (err) {
+  console.error(err.message);
+  process.exit(1);
+}
