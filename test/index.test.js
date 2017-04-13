@@ -121,6 +121,21 @@ describe('test/index.test.js', () => {
     .end();
   });
 
+  it('should print --version', function* () {
+    cwd = path.join(__dirname, 'fixtures/resolve');
+    yield coffee.fork(bin, [ '--version' ], { cwd })
+    // .debug()
+    .expect('stdout', require('../package.json').version + '\n')
+    .end();
+  });
+
+  it('should print -V', function* () {
+    cwd = path.join(__dirname, 'fixtures/resolve');
+    yield coffee.fork(bin, [ '-V' ], { cwd })
+    // .debug()
+    .expect('stdout', require('../package.json').version + '\n')
+    .end();
+  });
 });
 
 function getFiles(cwd) {
