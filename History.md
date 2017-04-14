@@ -1,4 +1,10 @@
 
+1.4.0 / 2017-04-14
+==================
+
+  * feat: ignore when it's private (#9)
+  * feat: support ypkgfiles --check (#8)
+
 1.3.1 / 2017-03-19
 ==================
 
