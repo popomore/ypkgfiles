@@ -22,6 +22,9 @@ module.exports = options => {
   const pkg = options.pkg = readPackage(path.join(cwd, 'package.json'));
   const isCheck = options.check;
 
+  // ignore if it's private
+  if (pkg.private === true) return;
+
   const entry = resolveEntry(options);
   debug('get entry %s', entry);
   let files = resolveFiles({ entry, ignoreModules: true });
