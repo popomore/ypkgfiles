@@ -136,6 +136,16 @@ describe('test/index.test.js', () => {
     .expect('stdout', require('../package.json').version + '\n')
     .end();
   });
+
+  it('should ignore when private', function* () {
+    cwd = path.join(__dirname, 'fixtures/resolve');
+    yield fs.writeFile(path.join(cwd, 'package.json'), '{"private":true}\n');
+    yield coffee.fork(bin, [], { cwd })
+    .debug()
+    .end();
+
+    assert.equal(getFiles(cwd), undefined);
+  });
 });
 
 function getFiles(cwd) {
