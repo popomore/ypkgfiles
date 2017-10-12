@@ -38,4 +38,22 @@ describe('test/index.test.js', () => {
     .end();
   });
 
+  it('should pass checking when existing in files but not match', function* () {
+    cwd = path.join(__dirname, 'fixtures/check-array');
+    yield fs.writeFile(path.join(cwd, 'package.json'), '{"files": ["index.js","lib", "app"]}');
+    yield coffee.fork(bin, [ '--check' ], { cwd })
+    .debug()
+    .expect('code', 0)
+    .end();
+  });
+
+  it('should check fail with strict when existing in files but not match', function* () {
+    cwd = path.join(__dirname, 'fixtures/check-array');
+    yield fs.writeFile(path.join(cwd, 'package.json'), '{"files": ["index.js","lib", "app"]}');
+    yield coffee.fork(bin, [ '--check', '--strict' ], { cwd })
+    .debug()
+    .expect('code', 1)
+    .expect('stderr', 'pkg.files should equal to [ index.js, lib ], but got [ index.js, lib, app ]\n')
+    .end();
+  });
 });
