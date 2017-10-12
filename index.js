@@ -13,6 +13,7 @@ const defaults = {
   entry: [],
   files: [],
   check: false,
+  strict: false,
 };
 
 module.exports = options => {
@@ -31,7 +32,7 @@ module.exports = options => {
   debug('get files %s', files);
   files = getFiles(files, cwd);
 
-  if (isCheck) return check(files, pkg.files || []);
+  if (isCheck) return check(files, pkg.files || [], options.strict);
 
   pkg.files = files;
   debug('get pkg.files %s', pkg.files);
@@ -96,9 +97,9 @@ function getFiles(files, cwd) {
   return Array.from(result);
 }
 
-function check(files, originalFiles) {
+function check(files, originalFiles, strict) {
   const msg = `pkg.files should equal to ${toArray(files)}, but got ${toArray(originalFiles)}`;
-  assert(files.length === originalFiles.length, msg);
+  if (strict) assert(files.length === originalFiles.length, msg);
   for (const file of files) {
     assert(originalFiles.indexOf(file) > -1, msg);
   }

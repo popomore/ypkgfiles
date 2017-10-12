@@ -6,6 +6,7 @@ const argv = require('yargs')
   .version()
   .alias('V', 'version')
   .boolean('check')
+  .boolean('strict')
   .argv;
 
 try {
@@ -14,6 +15,7 @@ try {
     entry: argv.entry,
     files: argv.files,
     check: argv.check,
+    strict: argv.strict,
   });
 } catch (err) {
   console.error(err.message);
