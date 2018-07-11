@@ -1,4 +1,10 @@
 
+1.6.0 / 2018-07-11
+==================
+
+**features**
+  * [[`d6ff9d8`](http://github.com/popomore/ypkgfiles/commit/d6ff9d855faa604a3b6b65470feebf5198fe3ef9)] - feat: support index.d.ts (#11) (TZ | 天猪 <<atian25@qq.com>>)
+
 1.5.0 / 2017-10-12
 ==================
 

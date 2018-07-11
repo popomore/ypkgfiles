@@ -1,6 +1,6 @@
 {
   "name": "ypkgfiles",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Yet another pkgfiles that generate pkg.files automatically",
   "dependencies": {
     "debug": "^2.6.1",
