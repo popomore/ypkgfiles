@@ -101,6 +101,18 @@ describe('test/index.test.js', () => {
     ]);
   });
 
+  it('should resolve index.d.ts', function* () {
+    cwd = path.join(__dirname, 'fixtures/dts');
+    yield coffee.fork(bin, [], { cwd })
+      .debug()
+      .end();
+
+    assert.deepEqual(getFiles(cwd), [
+      'index.js',
+      'index.d.ts',
+    ]);
+  });
+
   it('should ignore when no export', function* () {
     cwd = path.join(__dirname, 'fixtures/no-export');
     yield coffee.fork(bin, [ '--entry', 'a.js' ], { cwd })
