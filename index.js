@@ -85,6 +85,11 @@ function resolveEntry(options) {
     }
   }
 
+  const dts = path.join(cwd, 'index.d.ts');
+  if (fs.existsSync(dts)) {
+    result.add(dts);
+  }
+
   return Array.from(result);
 }
 
